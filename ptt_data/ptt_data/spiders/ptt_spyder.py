@@ -8,6 +8,7 @@ Created on Wed Feb 26 17:51:29 2020
 import scrapy
 from scrapy.http import FormRequest
 from ptt_data.items import PttDataItem
+from scrapy.exceptions import CloseSpider
 
 from datetime import datetime
 import logging
@@ -18,7 +19,7 @@ class spyder(scrapy.Spider):
     start_urls = ['https://www.ptt.cc/bbs/']
     handle_httpstatus_list = [404]
     custom_settings = {
-        "DOWNLOAD_DELAY": 1,
+        "DOWNLOAD_DELAY": 0,
         "CONCURRENT_REQUESTS_PER_DOMAIN": 2
     }
     
@@ -29,8 +30,12 @@ class spyder(scrapy.Spider):
     
     def __init__(self, board='Beauty', start_date = DATE, end_date = DATE):
         self.board_name = board
-        self.start_date = start_date
-        self.end_date = end_date
+        
+        if start_date != self.DATE:
+            self.start_date = datetime.strftime(datetime.strptime(start_date, '%m/%d'), '%m/%d')
+            self.end_date = datetime.strftime(datetime.strptime(end_date, '%m/%d'), '%m/%d')
+            
+        
     
     def parse_board(self, response):
         
@@ -55,7 +60,9 @@ class spyder(scrapy.Spider):
             for article in response.css('.r-ent'):
                 article_date = article.css('.meta > div.date::text').extract_first()
                 
-                if self.start_date == article_date.replace(" ",'0'):
+                #判斷日期是否符合
+                if (self.start_date <= article_date.replace(" ",'0') and
+                   self.end_date >= article_date.replace(" ",'0')):
                     count += 1
                     url = article.css('div.title > a::attr(href)').extract_first()
                     yield scrapy.Request(response.urljoin(url),

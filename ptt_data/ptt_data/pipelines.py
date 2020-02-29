@@ -19,7 +19,7 @@ class PttDataPipeline(object):
 #        pass
     
     def insert_article(self, item):
-        self.col.update_one(item, {'$set': item}, upsert=True) 
+        self.col.update_one({'canonicalUrl': item['canonicalUrl']}, item, upsert=True) 
     
     def close_spider(self, spider):
         self.client.close()
