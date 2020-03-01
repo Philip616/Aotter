@@ -19,7 +19,7 @@ class spyder(scrapy.Spider):
     start_urls = ['https://www.ptt.cc/bbs/']
     handle_httpstatus_list = [404]
     custom_settings = {
-        "DOWNLOAD_DELAY": 0,
+        "DOWNLOAD_DELAY": 1,
         "CONCURRENT_REQUESTS_PER_DOMAIN": 2
     }
     
