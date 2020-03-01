@@ -34,6 +34,9 @@ class spyder(scrapy.Spider):
         if start_date != self.DATE:
             self.start_date = datetime.strftime(datetime.strptime(start_date, '%m/%d'), '%m/%d')
             self.end_date = datetime.strftime(datetime.strptime(end_date, '%m/%d'), '%m/%d')
+        else:
+        	self.start_date = start_date
+        	self.end_date = end_date
             
         
     
