@@ -29,7 +29,7 @@ class spyder(scrapy.Spider):
     
     
     def __init__(self,ip='localhost', board='Beauty', 
-                 start_date = DATE, end_date = DATE, *args, **kwargs):
+                 start_date, end_date, *args, **kwargs):
         self.board_name = board
         self.ip = ip
         
@@ -37,8 +37,8 @@ class spyder(scrapy.Spider):
             self.start_date = datetime.strftime(datetime.strptime(start_date, '%m/%d'), '%m/%d')
             self.end_date = datetime.strftime(datetime.strptime(end_date, '%m/%d'), '%m/%d')
         else:
-        	self.start_date = start_date
-        	self.end_date = end_date
+        	self.start_date = self.DATE
+        	self.end_date = self.DATE
             
         super(spyder, self).__init__(*args, **kwargs)
     
