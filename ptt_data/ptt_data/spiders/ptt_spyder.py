@@ -28,8 +28,9 @@ class spyder(scrapy.Spider):
     MAX_RETRY = 10
     
     
-    def __init__(self, board='Beauty', start_date = DATE, end_date = DATE):
+    def __init__(self,ip='localhost', board='Beauty', start_date = DATE, end_date = DATE):
         self.board_name = board
+        self.ip = ip
         
         if start_date != self.DATE:
             self.start_date = datetime.strftime(datetime.strptime(start_date, '%m/%d'), '%m/%d')
