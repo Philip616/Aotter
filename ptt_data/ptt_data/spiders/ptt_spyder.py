@@ -28,7 +28,8 @@ class spyder(scrapy.Spider):
     MAX_RETRY = 10
     
     
-    def __init__(self,ip='localhost', board='Beauty', start_date = DATE, end_date = DATE):
+    def __init__(self,ip='localhost', board='Beauty', 
+                 start_date = DATE, end_date = DATE, *args, **kwargs):
         self.board_name = board
         self.ip = ip
         
@@ -39,7 +40,7 @@ class spyder(scrapy.Spider):
         	self.start_date = start_date
         	self.end_date = end_date
             
-        
+        super(spyder, self).__init__(*args, **kwargs)
     
     def parse_board(self, response):
         

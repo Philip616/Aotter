@@ -9,13 +9,13 @@ import pymongo
 
 class PttDataPipeline(object):
     def open_spider(self, spider):
-        pass
-        
-    def process_item(self, item, spider):
         self.ip = spider.ip
         self.client = pymongo.MongoClient("mongodb://%s:27017/" % self.ip)
         self.db = self.client['ptt_data']
         self.col = self.db['ptt_cache']
+        
+    def process_item(self, item, spider):
+        
         self.insert_article(item)
 #        pass
     
