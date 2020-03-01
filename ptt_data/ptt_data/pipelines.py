@@ -15,10 +15,10 @@ class PttDataPipeline(object):
         self.col = self.db['ptt_cache']
         
     def process_item(self, item, spider):
-        
         self.insert_article(item)
 #        pass
     
+    #直接運用replace_one判斷canonicalUrl是否有重複的，若有則不重複插入
     def insert_article(self, item):
         self.col.replace_one({'canonicalUrl': item['canonicalUrl']}, item, upsert=True) 
     

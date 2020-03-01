@@ -29,11 +29,12 @@ class spyder(scrapy.Spider):
     
     
     def __init__(self,ip='localhost', board='Beauty', 
-                 start_date, end_date, *args, **kwargs):
+                 start_date=DATE, end_date=DATE, *args, **kwargs):
         self.board_name = board
         self.ip = ip
         
-        if start_date != self.DATE:
+        #若沒有給日期，則只爬取當日貼文
+        if start_date != self.DATE and start_date != 'default' and end_date != 'default' :
             self.start_date = datetime.strftime(datetime.strptime(start_date, '%m/%d'), '%m/%d')
             self.end_date = datetime.strftime(datetime.strptime(end_date, '%m/%d'), '%m/%d')
         else:
@@ -44,6 +45,7 @@ class spyder(scrapy.Spider):
     
     def parse_board(self, response):
         
+        #找不到看板或錯誤的提示
         if response.status == 404:
             logging.warning('This board is not exists!.')
             
@@ -74,6 +76,7 @@ class spyder(scrapy.Spider):
                                          callback=self.parse_article,
                                          priority=1)
             
+            #判斷是否還有下一頁，若有擇繼續爬取
             if count != 0:
                 next_page = response.xpath(
                   '//div[@id="action-bar-container"]//a[contains(text(), "上頁")]/@href')
